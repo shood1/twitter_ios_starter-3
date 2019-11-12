@@ -70,7 +70,7 @@ class TweetCellTableViewCell: UITableViewCell {
             FavButton.setImage(UIImage(named:"favor-icon-red"), for: UIControl.State.normal)
         }
         else{
-            FavButton.setImage(UIImage(named:"favor-icon-red"), for: UIControl.State.normal)        }
+            FavButton.setImage(UIImage(named:"favor-icon"), for: UIControl.State.normal)        }
     }
     
     
