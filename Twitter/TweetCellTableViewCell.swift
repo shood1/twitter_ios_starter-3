@@ -15,8 +15,63 @@ class TweetCellTableViewCell: UITableViewCell {
     @IBOutlet weak var TweetContent: UILabel!
     
     
+    @IBOutlet weak var RetweetButton: UIButton!
     
-
+    @IBOutlet weak var FavButton: UIButton!
+    var favorited:Bool = false
+    var tweetId:Int = -1
+   
+    
+    @IBAction func FavoriteButton(_ sender: Any) {
+        let toBeFavorited = !favorited
+        if (toBeFavorited) {
+            TwitterAPICaller.client?.favoriteTweet(tweetId: tweetId, success: {
+                self.setFavorite(true)
+            }, failure: { (Error) in
+                print("Favorite did not succeed: \(error)")
+                
+            })
+        } else {
+            TwitterAPICaller.client?.unfavoriteTweet(tweetId: tweetId, success: {
+                self.setFavorite(false)
+                }, failure: { (Error) in
+                    print("Unfavorite did not succeed: \(error)")
+                    
+            })
+        }
+    }
+    
+    
+    @IBAction func Retweet(_ sender: Any) {
+        TwitterAPICaller.client?.Retweet(tweetId: tweetId, success:{
+            self.setRetweeted(true)
+        }, failure: { (error) in
+            print("Error is retweeting: \(error)")
+        })
+    }
+    
+    func setRetweeted(_ isRetweeted:Bool) {
+        if (isRetweeted) {
+            RetweetButton.setImage(UIImage(named: "retweet-icon-green"), for:
+                UIControl.State.normal)
+            RetweetButton.isEnabled = false
+        } else {
+            RetweetButton.setImage(UIImage(named: "retweet-icon"), for:
+                UIControl.State.normal)
+            RetweetButton.isEnabled = true        }
+    
+    }
+    
+    func setFavorite(_ isFavorited:Bool) {
+        favorited = isFavorited
+        if (favorited) {
+            FavButton.setImage(UIImage(named:"favor-icon-red"), for: UIControl.State.normal)
+        }
+        else{
+            FavButton.setImage(UIImage(named:"favor-icon-red"), for: UIControl.State.normal)        }
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
